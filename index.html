@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sahil System</title>
+    <style>
+        /* Remove margins and hide scrollbars */
+        body { margin: 0; overflow: hidden; background: black; }
+        canvas { display: block; }
+        
+        /* The text on top */
+        .overlay {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #0F0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border: 1px solid #0F0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    <div class="overlay">
+        <h1>SYSTEM HACKED</h1>
+        <p>Welcome to Project #2</p>
+    </div>
+
+    <script>
+        // Get the canvas node and the drawing context
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        // set the width and height of the canvas
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // setting up the columns
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        // setting up the drops
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        // characters - taken from the unicode charset
+        const chars = "01SAHILCTRL10";
+
+        // drawing the characters
+        function draw() {
+            // Black BG for the canvas
+            // translucent BG to show trail
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#0F0"; // Green text
+            ctx.font = fontSize + "px arial";
+
+            // looping over drops
+            for (let i = 0; i < drops.length; i++) {
+                // a random chinese character to print
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                
+                // x = i*fontSize, y = value of drops[i]*fontSize
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // sending the drop back to the top randomly after it has crossed the screen
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+                    drops[i] = 0;
+
+                // incrementing Y coordinate
+                drops[i]++;
+            }
+        }
+
+        setInterval(draw, 33);
+    </script>
+</body>
+</html>
+
+
